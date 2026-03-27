@@ -394,7 +394,7 @@ public:
 
 private:
     uint8_t HEIGHT = 0, WIDTH = 0, address = 0, charWidth = 0, step = 0, fontWidth = 5, currentPowerMode = BALANCED_MODE, invert = 0, pulsePlotPos = 0;
-    TwoWire *myWire=Wifi;
+    TwoWire *myWire=&Wire;
     String stringToPrint;
     uint8_t bitmapCoords[3];
     uint8_t buffer[128 * 64 / 8];
