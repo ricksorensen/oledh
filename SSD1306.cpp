@@ -245,7 +245,7 @@ OLED::OLED(uint8_t width, uint8_t height)
 {
     WIDTH = width;
     HEIGHT = height;
-    address = ADDR;
+    address = OLEDADDR;
 }
 
 OLED::OLED(uint8_t width, uint8_t height, uint8_t address)
@@ -255,10 +255,14 @@ OLED::OLED(uint8_t width, uint8_t height, uint8_t address)
     OLED::address = address;
 }
 
+void OLED::setWire(TwoWire *wuse) {
+  myWire = wuse;
+}
+
 void OLED::begin()
 {
-    Wire.begin();
-    Wire.setClock(200000);
+  //myWire.begin();
+  //myWire.setClock(200000);
     autoSetup();
     setPowerMode(BALANCED_MODE);
     clearBuffer();
@@ -350,10 +354,10 @@ void OLED::clearCustomFont()
 
 void OLED::execute(uint8_t instruction)
 {
-    Wire.beginTransmission(address);
-    Wire.write(0x00);
-    Wire.write(instruction);
-    Wire.endTransmission();
+    myWire->beginTransmission(address);
+    myWire->write(0x00);
+    myWire->write(instruction);
+    myWire->endTransmission();
 }
 
 void OLED::print(String string, uint8_t x, uint8_t y)
@@ -659,10 +663,10 @@ void OLED::setPosition(uint8_t x, uint8_t y)
 
 void OLED::sendData(uint8_t data)
 {
-    Wire.beginTransmission(address);
-    Wire.write(0x40);
-    Wire.write(data);
-    Wire.endTransmission();
+    myWire->beginTransmission(address);
+    myWire->write(0x40);
+    myWire->write(data);
+    myWire->endTransmission();
 }
 
 void OLED::setBrightness(uint8_t brightness)
@@ -710,19 +714,19 @@ void OLED::setPowerMode(uint8_t mode)
         {
         case TURBO_MODE:
             performancePowerMode();
-            Wire.setClock(1000000);
+            //myWire.setClock(1000000);
             break;
         case PERFORMANCE_MODE:
             performancePowerMode();
-            Wire.setClock(400000);
+            //myWire.setClock(400000);
             break;
         case BALANCED_MODE:
             balancedPowerMode();
-            Wire.setClock(200000);
+            //myWire.setClock(200000);
             break;
         case LOW_POWER_MODE:
             lowPowerMode();
-            Wire.setClock(100000);
+            //myWire.setClock(100000);
             break;
         }
     }
